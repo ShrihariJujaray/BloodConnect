@@ -1,0 +1,25 @@
+.hover-shadow:hover {
+  transition: all 0.3s ease;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card {
+  border-radius: 12px;
+  border: none;
+}
+
+.card-header {
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+}
+
+.badge {
+  padding: 8px 12px;
+  border-radius: 6px;
+}
