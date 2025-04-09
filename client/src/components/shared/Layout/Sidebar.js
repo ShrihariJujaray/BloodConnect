@@ -80,6 +80,17 @@ const Sidebar = () => {
             </>
           )}
 
+          {(user?.role === "hospital" || user?.role === "organisation") && (
+            <div
+              className={`menu-item ${
+                location.pathname === "/createcampaign" && "active"
+              }`}
+            >
+              <i className="fa-solid fa-calendar-plus"></i>
+              <Link to="/createcampaign">Create Campaign</Link>
+            </div>
+          )}
+
           {user?.role === "hospital" && (
             <div
               className={`menu-item ${

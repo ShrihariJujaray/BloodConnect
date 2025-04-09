@@ -1,31 +1,37 @@
-import './App.css';
-import {Routes, Route} from 'react-router-dom' 
-import HomePage from './pages/HomePage';
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
-import {Toaster} from 'react-hot-toast'
-import ProtectedRoute from './components/routes/ProtectedRoute';
-import PublicRoute from './components/routes/PublicRoute';
-import Donar from './pages/Dashboard/Donar';
-import Hospital from './pages/Dashboard/Hospital';
-import OrganisationPage from './pages/Dashboard/OrganisationPage';
-import Consumer from './pages/Dashboard/Consumer';
-import Donation from './pages/Donation';
-import Analytics from './pages/Dashboard/Analytics';
-import DonarList from './pages/admin/DonarList';
-import HospitalList from './pages/admin/HospitalList';
-import OrgList from './pages/admin/OrgList';
-import AdminHome from './pages/admin/AdminHome';
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import { Toaster } from "react-hot-toast";
+import ProtectedRoute from "./components/routes/ProtectedRoute";
+import PublicRoute from "./components/routes/PublicRoute";
+import Donar from "./pages/Dashboard/Donar";
+import Hospital from "./pages/Dashboard/Hospital";
+import OrganisationPage from "./pages/Dashboard/OrganisationPage";
+import Consumer from "./pages/Dashboard/Consumer";
+import Donation from "./pages/Donation";
+import Analytics from "./pages/Dashboard/Analytics";
+import DonarList from "./pages/admin/DonarList";
+import HospitalList from "./pages/admin/HospitalList";
+import OrgList from "./pages/admin/OrgList";
+import AdminHome from "./pages/admin/AdminHome";
+import CreateCampaign from "./pages/CreateCampaign";
 function App() {
   return (
     <>
-    <div><Toaster position="top-left" /></div>
+      <div>
+        <Toaster position="top-left" />
+      </div>
       <Routes>
-        <Route path="/" element={
+        <Route
+          path="/"
+          element={
             <ProtectedRoute>
-              <HomePage/>
+              <HomePage />
             </ProtectedRoute>
-        } />
+          }
+        />
 
         <Route
           path="/admin"
@@ -57,48 +63,82 @@ function App() {
             <ProtectedRoute>
               <OrgList />
             </ProtectedRoute>
-          }/>
+          }
+        />
 
-        <Route path="/donar" element={
+        <Route
+          path="/createcampaign"
+          element={
             <ProtectedRoute>
-              <Donar/>
+              <CreateCampaign />
             </ProtectedRoute>
-        } />
-        <Route path="/hospital" element={
+          }
+        />
+
+        <Route
+          path="/donar"
+          element={
             <ProtectedRoute>
-              <Hospital/>
+              <Donar />
             </ProtectedRoute>
-        } />
-        <Route path="/analytics" element={
+          }
+        />
+        <Route
+          path="/hospital"
+          element={
             <ProtectedRoute>
-              <Analytics/>
+              <Hospital />
             </ProtectedRoute>
-        } />
-        <Route path="/consumer" element={
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
             <ProtectedRoute>
-              <Consumer/>
+              <Analytics />
             </ProtectedRoute>
-        } />
-        <Route path="/donation" element={
+          }
+        />
+        <Route
+          path="/consumer"
+          element={
             <ProtectedRoute>
-              <Donation/>
+              <Consumer />
             </ProtectedRoute>
-        } />
-        <Route path="/organisation" element={
+          }
+        />
+        <Route
+          path="/donation"
+          element={
             <ProtectedRoute>
-              <OrganisationPage/>
+              <Donation />
             </ProtectedRoute>
-        } />
-        <Route path="/login" element={
-          <PublicRoute>
-            <Login/>
-          </PublicRoute>
-        } />
-        <Route path="/register" element={
+          }
+        />
+        <Route
+          path="/organisation"
+          element={
+            <ProtectedRoute>
+              <OrganisationPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/login"
+          element={
             <PublicRoute>
-              <Register/>
+              <Login />
             </PublicRoute>
-        } />
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
       </Routes>
     </>
   );
