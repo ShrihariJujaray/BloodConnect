@@ -15,7 +15,7 @@ const Login = () => {
                 <div className="row">
                 <div className="col-sm-4 text-black">
               <div className="px-5 ms-xl-4">
-                  <img src="./assets/logo.png" className='logo-login' alt="Red Gold" />
+                  <p>BLOOD CONNECT</p>
               </div>
               <div className="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                 {loading ?  (<div className="d-flex w-100 h-100 align-items-center justify-content-center">
