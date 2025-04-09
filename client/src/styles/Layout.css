@@ -1,43 +1,61 @@
-.sidebar{
+.sidebar {
     height: 100vh !important;
-    border-radius: 0px 10px 10px 0px;
-    background-color: rgb(134, 15, 15);
-    box-shadow: 0 0 2px rgb(255, 0, 0);
+    /* border-radius: 0 10px 10px 0; */
+    background-color:#1a1a2e; /* Modern dark slate */
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
     color: white;
-}
-
-.menu{
-    padding-top: 100px;
-}
-
-.menu-item{
-    padding-top:20px ;
-}
-
-.menu-item a{
-    color: white;
+    padding: 2rem 1rem 1rem 1rem;
+    width: 250px;
+    border: 1px solid #475569;
+  }
+  
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin: 0 0.25rem;
+    border-radius: 15px;
+    transition: background-color 0.3s ease;
+    color: #e2e8f0;
     text-decoration: none;
+  }
+  
+  .menu-item i {
     font-size: 1.2rem;
-}
-
-.menu-item i{
-    font-size: 1.2rem;
-    margin: 0 15px;
+    min-width: 24px;
+    color: inherit;
+  }
+  
+  .menu-item a {
+    color: inherit;
+    text-decoration: none;
+    font-size: 1.05rem;
+    flex-grow: 1;
+  }
+  
+  /* Hover */
+  .menu-item:hover {
+    background-color: #334155;
     color: white;
-}
-
-.active{
-    background-color: white;
-    padding: 10px;
-    margin-top: 25px;
-    box-shadow: 0 0 7px rgb(255, 0, 0);
-    border-radius: 0px 10px 10px 0px;
-}
-
-.active a{
-    color: rgb(134, 15, 15);
-}
-
-.active i{
-    color: rgb(134, 15, 15);
-}
+  }
+  
+  /* Active */
+  .menu-item.active {
+    background-color: #6366f1; /* Indigo */
+    color: white;
+    box-shadow: inset 4px 0 0 #4338ca;
+    font-weight: 500;
+  }
+  
+  .menu-item.active i,
+  .menu-item.active a {
+    color: white;
+  }
+  
