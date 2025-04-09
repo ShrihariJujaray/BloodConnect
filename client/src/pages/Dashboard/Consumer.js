@@ -51,10 +51,10 @@ const Consumer = () => {
       ) : (
         <div className="container mt-4">
           <table className="table table-danger">
-            <thead className="table-active">
+            <thead className="table-active table table-hover table-striped">
               <tr>
                 <th scope="col">Blood Group</th>
-                <th scope="col">Inventory TYpe</th>
+                <th scope="col">Inventory Type</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Email</th>
                 <th scope="col">Date</th>
