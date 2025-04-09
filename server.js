@@ -22,6 +22,9 @@ app.use("/api/v1/auth", require("./routes/authRoute.js"));
 app.use("/api/v1/inventory", require("./routes/inventoryRoutes.js"));
 app.use("/api/v1/analytics", require("./routes/analyticsRoutes.js"));
 app.use("/api/v1/admin", require("./routes/adminRoutes.js"));
+app.use("/api/v1/campaigns", require("./routes/campaignRoutes.js"));
+app.use("/api/v1/volunteers", require("./routes/volunteerRoutes.js"));
+
 
 const PORT = process.env.PORT || 8080;
 
