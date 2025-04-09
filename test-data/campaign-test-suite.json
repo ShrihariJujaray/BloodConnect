@@ -1,0 +1,30 @@
+{
+    "validCampaign": {
+        "title": "Emergency Blood Drive 2024",
+        "description": "Urgent blood donation camp for thalassemia patients. All blood types needed.",
+        "image": "https://example.com/blood-drive-image.jpg",
+        "date": "2024-02-25T09:00:00.000Z",
+        "location": {
+            "address": "City Hospital, Main Street",
+            "city": "Bangalore",
+            "state": "Karnataka",
+            "zip": "560001",
+            "country": "India"
+        },
+        "volunteerContacts": ["65abc123def456gh78901234", "65abc123def456gh78901235"]
+    },
+    "updateCampaign": {
+        "title": "Updated Blood Drive 2024",
+        "description": "Updated description for the blood donation camp",
+        "location": {
+            "address": "New City Hospital, South Street",
+            "city": "Bangalore",
+            "state": "Karnataka",
+            "zip": "560002",
+            "country": "India"
+        }
+    },
+    "assignVolunteers": {
+        "volunteerIds": ["65abc123def456gh78901236", "65abc123def456gh78901237"]
+    }
+}

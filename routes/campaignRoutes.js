@@ -1,23 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const { protect, checkRole } = require('../middlewares/authMiddleware');
+const authMiddelware = require("../middleware/authMiddleware");
 const {
     createCampaign,
     getAllCampaigns,
     getCampaignById,
     updateCampaign,
     deleteCampaign,
-    assignVolunteers
+    assignVolunteers,
+    addVolunteersToCampaign
 } = require('../controllers/compaginController');
 
 // Public routes
-router.get('/', getAllCampaigns);
+router.get('/getcampaigns', getAllCampaigns);
 router.get('/:id', getCampaignById);
 
 // Protected routes
-router.post('/', protect, checkRole('admin', 'hospital', 'organization'), createCampaign);
-router.put('/:id', protect, checkRole('admin', 'hospital', 'organization'), updateCampaign);
-router.delete('/:id', protect, checkRole('admin'), deleteCampaign);
-router.post('/:id/volunteers', protect, checkRole('admin', 'organization'), assignVolunteers);
+router.post('/createcampaign',authMiddelware, createCampaign);
+router.put('/updatecampaign/:id',authMiddelware, updateCampaign);
+// POST /api/campaigns/:id/volunteers
+router.post("/:id/volunteers/add-contacts",authMiddelware,addVolunteersToCampaign);
+
+router.delete('/deletecampaign/:id',authMiddelware, deleteCampaign);
+router.post('/campaign/:id/volunteers',authMiddelware, assignVolunteers);
 
 module.exports = router;

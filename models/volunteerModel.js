@@ -41,4 +41,5 @@ const volunteerSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-module.exports = mongoose.model("Volunteer", volunteerSchema);
+const Volunteer = mongoose.model("Volunteer", volunteerSchema);
+module.exports = { Volunteer, volunteerSchema };
