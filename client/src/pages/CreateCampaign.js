@@ -9,9 +9,15 @@ const CreateCampaign = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        location: '',
+        image: '',
         date: '',
-        time: '',
+        location: {
+            address: '',
+            city: '',
+            state: '',
+            zip: '',
+            country: ''
+        },
         volunteers: []
     });
     const [volunteerForms, setVolunteerForms] = useState([{
@@ -54,16 +60,28 @@ const CreateCampaign = () => {
     ];
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+        if (name.includes('.')) {
+            const [parent, child] = name.split('.');
+            setFormData(prev => ({
+                ...prev,
+                [parent]: {
+                    ...prev[parent],
+                    [child]: value
+                }
+            }));
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await API.post('/api/campaign/createcampaign', { ...formData, volunteers: volunteerForms });
+            const response = await API.post('/campaigns/createcampaign', { ...formData, volunteers: volunteerForms });
             if (response.data?.success) {
                 toast.success('Campaign created successfully');
                 navigate('/');
@@ -158,20 +176,20 @@ const CreateCampaign = () => {
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Location</label>
+                                <label className="form-label">Banner Image URL</label>
                                 <input
-                                    type="text"
+                                    type="url"
                                     className="form-control"
-                                    name="location"
-                                    value={formData.location}
+                                    name="image"
+                                    value={formData.image}
                                     onChange={handleChange}
                                     required
                                 />
                             </div>
                             <div className="mb-3">
-                                <label className="form-label">Date</label>
+                                <label className="form-label">Date and Time</label>
                                 <input
-                                    type="date"
+                                    type="datetime-local"
                                     className="form-control"
                                     name="date"
                                     value={formData.date}
@@ -179,18 +197,68 @@ const CreateCampaign = () => {
                                     required
                                 />
                             </div>
+                            
                             <div className="mb-3">
-                                <label className="form-label">Time</label>
-                                <input
-                                    type="time"
-                                    className="form-control"
-                                    name="time"
-                                    value={formData.time}
-                                    onChange={handleChange}
-                                    required
-                                />
+                                <h5>Location Details</h5>
+                                <div className="row g-3">
+                                    <div className="col-12">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Address"
+                                            name="location.address"
+                                            value={formData.location.address}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="City"
+                                            name="location.city"
+                                            value={formData.location.city}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="State"
+                                            name="location.state"
+                                            value={formData.location.state}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="ZIP Code"
+                                            name="location.zip"
+                                            value={formData.location.zip}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Country"
+                                            name="location.country"
+                                            value={formData.location.country}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                </div>
                             </div>
-
+                            
                             <div className="mb-4">
                                 <div className="d-flex justify-content-between align-items-center mb-3">
                                     <h5>Volunteers</h5>
