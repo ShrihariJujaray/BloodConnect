@@ -66,11 +66,30 @@ const createCampaign = async (req, res) => {
 const getAllCampaigns = async (req, res) => {
   try {
     const campaigns = await Campaign.find()
+      .sort({ date: 1 }) // Sort by upcoming dates first
       .populate("campaignAdmin", "name email")
       .populate("volunteerContacts", "name email phone");
-    res.status(200).json(campaigns);
+    
+    if (!campaigns || campaigns.length === 0) {
+      return res.status(200).json({
+        success: true,
+        message: "No campaigns found",
+        data: []
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Campaigns fetched successfully",
+      data: campaigns
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error fetching campaigns:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch campaigns",
+      error: error.message
+    });
   }
 };
 

@@ -37,7 +37,7 @@ const Header = () => {
           <div className="navbar-brand d-flex justify-content-center align-items-center ms-3 cursor-pointer">
             <Link to="/" className="text-decoration-none text-white d-flex align-items-center">
               <FaStethoscope className="me-2" style={{ color: '#ff4d4d', fontSize: '24px' }} />
-              <span className="fs-3">RED BLOOD</span>
+              <span className="fs-3">BLOOD CONNECT</span>
             </Link>
           </div>
 
