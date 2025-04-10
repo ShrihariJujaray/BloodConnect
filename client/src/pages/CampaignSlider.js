@@ -2,12 +2,15 @@ import React, { useRef, useState } from 'react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import API from '../services/API';
+import toast from 'react-hot-toast';
 
 const CampaignSlider = ({ campaigns = [], userRole }) => {
 
   const sliderRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -188,19 +191,48 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
     setShowModal(true);
   };
 
+  const handleInputChange = (field, value, nestedField = null, nestedValue = null) => {
+    setFormData(prev => {
+      if (nestedField && nestedValue) {
+        return {
+          ...prev,
+          [field]: {
+            ...prev[field],
+            [nestedField]: {
+              ...prev[field][nestedField],
+              [nestedValue]: value
+            }
+          }
+        };
+      } else if (nestedField) {
+        return {
+          ...prev,
+          [field]: {
+            ...prev[field],
+            [nestedField]: value
+          }
+        };
+      }
+      return {
+        ...prev,
+        [field]: value
+      };
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     try {
       const response = await API.post(`/campaigns/${selectedCampaign._id}/volunteers/add-contacts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ volunteerContacts: [formData] }),
+        volunteerContacts: [formData]
       });
       
-      if (response.ok) {
+      if (response.data?.success) {
+        toast.success('Volunteer added successfully!');
         setShowModal(false);
+        // Reset form
         setFormData({
           name: '',
           email: '',
@@ -220,10 +252,14 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
             }
           }
         });
-        // Refresh campaigns data if needed
+      } else {
+        throw new Error(response.data?.message || 'Failed to add volunteer');
       }
     } catch (error) {
       console.error('Error adding volunteer:', error);
+      toast.error(error.message || 'Failed to add volunteer');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -274,7 +310,7 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
       }}>
         <div className="border p-3 mb-3 rounded">
           <h3 className="mb-4">Add Volunteer</h3>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="needs-validation">
             <div className="row g-3">
               <div className="col-md-4">
                 <input
@@ -282,7 +318,7 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
                   className="form-control"
                   placeholder="Volunteer Name"
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
                   required
                 />
               </div>
@@ -292,7 +328,7 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
                   className="form-control"
                   placeholder="Email"
                   value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
                   required
                 />
               </div>
@@ -302,7 +338,7 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
                   className="form-control"
                   placeholder="Phone"
                   value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
                   required
                 />
               </div>
@@ -379,13 +415,8 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
                   type="time"
                   className="form-control"
                   value={formData.availability.availableHours.start}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    availability: {
-                      ...formData.availability,
-                      availableHours: { ...formData.availability.availableHours, start: e.target.value }
-                    }
-                  })}
+                  onChange={(e) => handleInputChange('availability', e.target.value, 'availableHours', 'start')}
+                  required
                 />
               </div>
               <div className="col-md-6">
@@ -394,21 +425,30 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
                   type="time"
                   className="form-control"
                   value={formData.availability.availableHours.end}
-                  onChange={(e) => setFormData({
-                    ...formData,
-                    availability: {
-                      ...formData.availability,
-                      availableHours: { ...formData.availability.availableHours, end: e.target.value }
-                    }
-                  })}
+                  onChange={(e) => handleInputChange('availability', e.target.value, 'availableHours', 'end')}
+                  required
                 />
               </div>
             </div>
             <div className="mt-4 d-flex gap-2">
-              <button type="submit" className="btn btn-primary">
-                Add Volunteer
+              <button 
+                type="submit" 
+                className="btn btn-primary"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Adding...
+                  </>
+                ) : 'Add Volunteer'}
               </button>
-              <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
+              <button 
+                type="button" 
+                className="btn btn-secondary" 
+                onClick={() => setShowModal(false)}
+                disabled={isSubmitting}
+              >
                 Cancel
               </button>
             </div>
