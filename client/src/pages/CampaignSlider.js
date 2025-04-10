@@ -1,10 +1,31 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const CampaignSlider = ({ campaigns = [] }) => {
+const CampaignSlider = ({ campaigns = [], userRole }) => {
   const sliderRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedCampaign, setSelectedCampaign] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    organisation: '',
+    skills: [],
+    documents: {
+      idProof: '',
+      certification: ''
+    },
+    availability: {
+      available: true,
+      availableDays: [],
+      availableHours: {
+        start: '',
+        end: ''
+      }
+    }
+  });
 
   const settings = {
     dots: true,
@@ -87,6 +108,7 @@ const CampaignSlider = ({ campaigns = [] }) => {
       boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
       display: 'flex',
       flexDirection: 'column',
+      position: 'relative', // Add this
     },
     imageContainer: {
       height: '300px', // Increased height for better full-width appearance
@@ -105,6 +127,13 @@ const CampaignSlider = ({ campaigns = [] }) => {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
+      position: 'relative', // Add this
+    },
+    titleContainer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '10px',
     },
     title: {
       fontSize: '1.25rem',
@@ -125,6 +154,19 @@ const CampaignSlider = ({ campaigns = [] }) => {
       borderTop: '1px solid #eee',
       paddingTop: '15px',
       marginTop: 'auto',
+    },
+    volunteerButton: {
+      position: 'absolute',
+      top: '20px',
+      right: '20px',
+      padding: '8px 16px',
+      backgroundColor: '#007bff',
+      color: 'white',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+      fontSize: '0.9rem',
+      zIndex: 1,
     }
   };
 
@@ -135,6 +177,77 @@ const CampaignSlider = ({ campaigns = [] }) => {
   const goToNext = () => {
     sliderRef.current.slickNext();
   };
+
+  const handleAddVolunteer = (campaign) => {
+    setSelectedCampaign(campaign);
+    setShowModal(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await API.post(`/campaigns/${selectedCampaign._id}/volunteers/add-contacts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ volunteerContacts: [formData] }),
+      });
+      
+      if (response.ok) {
+        setShowModal(false);
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          organisation: '',
+          skills: [],
+          documents: {
+            idProof: '',
+            certification: ''
+          },
+          availability: {
+            available: true,
+            availableDays: [],
+            availableHours: {
+              start: '',
+              end: ''
+            }
+          }
+        });
+        // Refresh campaigns data if needed
+      }
+    } catch (error) {
+      console.error('Error adding volunteer:', error);
+    }
+  };
+
+  const VolunteerModal = () => (
+    <div className="modal" style={{
+      display: showModal ? 'block' : 'none',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      zIndex: 1000
+    }}>
+      <div className="modal-content" style={{
+        position: 'relative',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        backgroundColor: 'white',
+        padding: '20px',
+        borderRadius: '8px',
+        width: '90%',
+        maxWidth: '500px'
+      }}>
+        
+      </div>
+    </div>
+  );
 
   if (!campaigns.length) return null;
 
@@ -175,6 +288,16 @@ const CampaignSlider = ({ campaigns = [] }) => {
                   />
                 </div>
                 <div style={sliderStyles.content}>
+                  {(userRole === 'hospital' || userRole === 'organization') && (
+                    <button
+                      onClick={() => handleAddVolunteer(campaign)}
+                      style={sliderStyles.volunteerButton}
+                      className="volunteer-btn"
+                    >
+                      <i className="fas fa-user-plus me-2"></i>
+                      Add Volunteer
+                    </button>
+                  )}
                   <div>
                     <h3 style={sliderStyles.title}>{campaign.title}</h3>
                     <p style={sliderStyles.description}>{campaign.description}</p>
@@ -199,6 +322,7 @@ const CampaignSlider = ({ campaigns = [] }) => {
           ))}
         </Slider>
       </div>
+      <VolunteerModal />
     </div>
   );
 };
