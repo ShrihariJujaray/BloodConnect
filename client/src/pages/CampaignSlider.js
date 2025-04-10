@@ -225,14 +225,39 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
     setIsSubmitting(true);
 
     try {
+      // Format the data according to the required structure
+      const volunteerData = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        skills: formData.skills,
+  
+        status: 'active',
+        documents: {
+          idProof: formData.documents.idProof,
+          certification: formData.documents.certification
+        },
+        organisation:"6614c218f88df5d7c73c4f92",
+
+  
+
+        availability: {
+          available: true,
+          availableDays: formData.availability.availableDays,
+          availableHours: {
+            start: formData.availability.availableHours.start,
+            end: formData.availability.availableHours.end
+          }
+        }
+      };
+
       const response = await API.post(`/campaigns/${selectedCampaign._id}/volunteers/add-contacts`, {
-        volunteerContacts: [formData]
+        volunteerContacts: [volunteerData]
       });
       
       if (response.data?.success) {
         toast.success('Volunteer added successfully!');
         setShowModal(false);
-        // Reset form
         setFormData({
           name: '',
           email: '',
@@ -252,12 +277,10 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
             }
           }
         });
-      } else {
-        throw new Error(response.data?.message || 'Failed to add volunteer');
       }
     } catch (error) {
       console.error('Error adding volunteer:', error);
-      toast.error(error.message || 'Failed to add volunteer');
+      toast.error(error.response?.data?.message || 'Failed to add volunteer');
     } finally {
       setIsSubmitting(false);
     }
@@ -342,6 +365,30 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
                   required
                 />
               </div>
+              
+              <div className="col-md-6">
+                <label className="form-label">ID Proof URL</label>
+                <input
+                  type="url"
+                  className="form-control"
+                  placeholder="https://example.com/idproof.jpg"
+                  value={formData.documents.idProof}
+                  onChange={(e) => handleInputChange('documents', e.target.value, 'idProof')}
+                  required
+                />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Certification URL</label>
+                <input
+                  type="url"
+                  className="form-control"
+                  placeholder="https://example.com/certificate.pdf"
+                  value={formData.documents.certification}
+                  onChange={(e) => handleInputChange('documents', e.target.value, 'certification')}
+                  required
+                />
+              </div>
+              
               <div className="col-12">
                 <label className="form-label">Skills</label>
                 <select
