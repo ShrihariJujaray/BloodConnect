@@ -6,16 +6,18 @@ import Layout from "../components/shared/Layout/Layout";
 import Modal from "../components/shared/modal/Modal";
 import API from "../services/API";
 import moment from 'moment'
+import CampaignSlider from "./CampaignSlider"; // Fix import statement
 
 const HomePage = () => {
-  const [data,setData] = useState([]);
-  const { loading, error,user } = useSelector((state) => state.auth);
+  const [data, setData] = useState([]);
+  const [campaigns, setCampaigns] = useState([]);
+  const { loading, error, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const getBloodRecords= async()=>{
+  const getBloodRecords = async () => {
     try {
-      const {data} = await API.get('/inventory/get-inventory');
-      if(data?.success){
+      const { data } = await API.get('/inventory/get-inventory');
+      if (data?.success) {
         setData(data?.inventory);
       }
     } catch (error) {
@@ -23,9 +25,21 @@ const HomePage = () => {
     }
   }
 
-  useEffect(()=>{
+  const getCampaigns = async () => {
+    try {
+      const response = await API.get('/campaigns/getcampaigns');
+      if (response.data?.success) {
+        setCampaigns(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
     getBloodRecords();
-  },[])
+    getCampaigns();
+  }, [])
 
   return (
     <Layout>
@@ -44,66 +58,69 @@ const HomePage = () => {
           />
         </div>
       ) : (
-        <div className="container py-4">
-          <div className="card shadow-sm mb-4">
-            <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-              <h4 className="mb-0">Blood Inventory</h4>
-              <button
-                className="btn btn-light"
-                data-bs-toggle="modal"
-                data-bs-target="#staticBackdrop"
-              >
-                <i className="fa-regular fa-square-plus"></i> Add New Record
-              </button>
-            </div>
-            <div className="card-body">
-              <div className="table-responsive">
-                <table className="table table-hover">
-                  <thead className="table-light">
-                    <tr>
-                      <th scope="col">Blood Group</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Quantity</th>
-                      <th scope="col">Donor Email</th>
-                      <th scope="col">Date & Time</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data?.map((record) => (
-                      <tr 
-                        key={record._id}
-                        className={`${
-                          record.inventoryType.toLowerCase() === 'in'
-                            ? 'table-success'
-                            : 'table-danger'
-                        } hover-shadow`}
-                      >
-                        <td className="fw-bold">{record.bloodGroup}</td>
-                        <td>
-                          <span className={`badge ${
-                            record.inventoryType.toLowerCase() === 'in'
-                              ? 'bg-success'
-                              : 'bg-danger'
-                          }`}>
-                            {record.inventoryType.toUpperCase()}
-                          </span>
-                        </td>
-                        <td>{record.quantity} ml</td>
-                        <td>
-                          <small>{record.email}</small>
-                        </td>
-                        <td>
-                          <small>{moment(record.createdAt).format("DD/MM/YYYY hh:mm A")}</small>
-                        </td>
+        <>
+          <CampaignSlider campaigns={campaigns} />
+          <div className="container py-4">
+            <div className="card shadow-sm mb-4">
+              <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 className="mb-0">Blood Inventory</h4>
+                <button
+                  className="btn btn-light"
+                  data-bs-toggle="modal"
+                  data-bs-target="#staticBackdrop"
+                >
+                  <i className="fa-regular fa-square-plus"></i> Add New Record
+                </button>
+              </div>
+              <div className="card-body">
+                <div className="table-responsive">
+                  <table className="table table-hover">
+                    <thead className="table-light">
+                      <tr>
+                        <th scope="col">Blood Group</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Donor Email</th>
+                        <th scope="col">Date & Time</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {data?.map((record) => (
+                        <tr
+                          key={record._id}
+                          className={`${
+                            record.inventoryType.toLowerCase() === 'in'
+                              ? 'table-success'
+                              : 'table-danger'
+                          } hover-shadow`}
+                        >
+                          <td className="fw-bold">{record.bloodGroup}</td>
+                          <td>
+                            <span className={`badge ${
+                              record.inventoryType.toLowerCase() === 'in'
+                                ? 'bg-success'
+                                : 'bg-danger'
+                            }`}>
+                              {record.inventoryType.toUpperCase()}
+                            </span>
+                          </td>
+                          <td>{record.quantity} ml</td>
+                          <td>
+                            <small>{record.email}</small>
+                          </td>
+                          <td>
+                            <small>{moment(record.createdAt).format("DD/MM/YYYY hh:mm A")}</small>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
+            <Modal />
           </div>
-          <Modal />
-        </div>
+        </>
       )}
     </Layout>
   );
