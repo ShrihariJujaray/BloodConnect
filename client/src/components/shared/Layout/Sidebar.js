@@ -3,21 +3,24 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../../../styles/Layout.css";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import ChatBox from "../../ChatBox/ChatBox";
 
 const Sidebar = () => {
   const location = useLocation();
+
+  const [showChat, setShowChat] = useState(false);
+
   const { user } = useSelector((state) => state.auth);
   return (
     <div>
       <div className="sidebar">
         <div className="menu">
-          <div
-            className={`menu-item ${location.pathname === "/" && "active"}`}
-          >
+          <div className={`menu-item ${location.pathname === "/" && "active"}`}>
             <i className="fa-solid fa-house"></i>
             <Link to="/">Home</Link>
           </div>
-          
+
           {user?.role === "organisation" && (
             <>
               <div
@@ -44,7 +47,7 @@ const Sidebar = () => {
               </div>
             </>
           )}
-          
+
           {user?.role === "admin" && (
             <>
               <div
@@ -74,7 +77,7 @@ const Sidebar = () => {
             </>
           )}
 
-          {(user?.role === "donar" || user?.role === "hospital") && (
+          {user?.role === "donar" && (
             <>
               <div
                 className={`menu-item ${
@@ -128,6 +131,13 @@ const Sidebar = () => {
               <Link to="/donation">Donations Log</Link>
             </div>
           )}
+
+          <div className="menu-item" onClick={() => setShowChat(!showChat)}>
+            <i className="fa-solid fa-robot"></i>
+            <span>AI Chat Assist</span>
+          </div>
+
+          {showChat && <ChatBox onClose={() => setShowChat(false)} />}
         </div>
       </div>
     </div>
