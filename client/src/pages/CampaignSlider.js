@@ -385,16 +385,7 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
           {campaigns.map((campaign) => (
             <div key={campaign._id} style={sliderStyles.slide}>
               <div style={sliderStyles.card}>
-                {(userRole === 'hospital' || userRole === 'organization') && (
-                  <button
-                    onClick={() => handleAddVolunteer(campaign)}
-                    style={sliderStyles.volunteerButton}
-                    className="volunteer-btn"
-                  >
-                    <i className="fas fa-user-plus me-2"></i>
-                    Add Volunteer
-                  </button>
-                )}
+              
                 <div style={sliderStyles.imageContainer}>
                   <img 
                     src={campaign.image} 
@@ -409,6 +400,16 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
                   <div>
                     <h3 style={sliderStyles.title}>{campaign.title}</h3>
                     <p style={sliderStyles.description}>{campaign.description}</p>
+                    {(userRole === 'hospital' || userRole === 'organization') && (
+                  <button
+                    onClick={() => handleAddVolunteer(campaign)}
+                    style={sliderStyles.volunteerButton}
+                    className="volunteer-btn"
+                  >
+                    <i className="fas fa-user-plus me-2"></i>
+                    Add Volunteer
+                  </button>
+                )}
                   </div>
                   <div style={sliderStyles.info}>
                     <p className="mb-2">
