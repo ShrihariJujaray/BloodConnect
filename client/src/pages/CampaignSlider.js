@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const CampaignSlider = ({ campaigns = [], userRole }) => {
+
   const sliderRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState(null);
@@ -103,7 +104,7 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
       margin: '0 auto',
       border: '1px solid #ddd',
       borderRadius: '12px',
-      overflow: 'hidden',
+      overflow: 'visible', // Change from 'hidden' to 'visible'
       backgroundColor: '#fff',
       boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
       display: 'flex',
@@ -157,16 +158,20 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
     },
     volunteerButton: {
       position: 'absolute',
-      top: '20px',
+      top: '-15px',
       right: '20px',
-      padding: '8px 16px',
+      padding: '10px 20px',
       backgroundColor: '#007bff',
       color: 'white',
       border: 'none',
       borderRadius: '5px',
       cursor: 'pointer',
       fontSize: '0.9rem',
-      zIndex: 1,
+      zIndex: 10,
+      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+      '&:hover': {
+        backgroundColor: '#0056b3'
+      }
     }
   };
 
@@ -380,6 +385,16 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
           {campaigns.map((campaign) => (
             <div key={campaign._id} style={sliderStyles.slide}>
               <div style={sliderStyles.card}>
+                {(userRole === 'hospital' || userRole === 'organization') && (
+                  <button
+                    onClick={() => handleAddVolunteer(campaign)}
+                    style={sliderStyles.volunteerButton}
+                    className="volunteer-btn"
+                  >
+                    <i className="fas fa-user-plus me-2"></i>
+                    Add Volunteer
+                  </button>
+                )}
                 <div style={sliderStyles.imageContainer}>
                   <img 
                     src={campaign.image} 
@@ -391,16 +406,6 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
                   />
                 </div>
                 <div style={sliderStyles.content}>
-                  {(userRole === 'hospital' || userRole === 'organization') && (
-                    <button
-                      onClick={() => handleAddVolunteer(campaign)}
-                      style={sliderStyles.volunteerButton}
-                      className="volunteer-btn"
-                    >
-                      <i className="fas fa-user-plus me-2"></i>
-                      Add Volunteer
-                    </button>
-                  )}
                   <div>
                     <h3 style={sliderStyles.title}>{campaign.title}</h3>
                     <p style={sliderStyles.description}>{campaign.description}</p>

@@ -59,7 +59,7 @@ const HomePage = () => {
         </div>
       ) : (
         <>
-          <CampaignSlider campaigns={campaigns} />
+          <CampaignSlider campaigns={campaigns} userRole={user?.role} />
           <div className="container py-4">
             <div className="card shadow-sm mb-4">
               <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
