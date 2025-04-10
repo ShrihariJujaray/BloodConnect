@@ -1,44 +1,43 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Form from '../../components/shared/Form/Form'
-import {useSelector} from 'react-redux'
-import {DNA} from 'react-loader-spinner'
+import { useSelector } from 'react-redux'
+import { DNA } from 'react-loader-spinner'
 import toast from 'react-hot-toast'
 
 const Login = () => {
-  const {loading,error} = useSelector(state => state.auth)
+  const { loading, error } = useSelector(state => state.auth)
+
   return (
     <>
-      {error && <span>{toast.error(error)}</span>}
-      <div className='row hide_scroll'>
-      <section className="vh-100">
-        <div className="container-fluid">
-                <div className="row">
-                <div className="col-sm-4 text-black">
-              <div className="px-5 ms-xl-4">
-                  <p>BLOOD CONNECT</p>
-              </div>
-              <div className="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                {loading ?  (<div className="d-flex w-100 h-100 align-items-center justify-content-center">
-                <DNA
+      {error && toast.error(error)}
+      <div
+        className="container-fluid d-flex justify-content-center align-items-center"
+        style={{
+          minHeight: '1vh',
+          backgroundColor: '#f8f9fa',
+          padding: '1rem'
+        }}
+      >
+        <div className="col-11 col-sm-8 col-md-6 col-lg-4 bg-white p-2 rounded shadow">
+          <h2 className="mb-4 fw-bold text-center text-danger">BLOOD CONNECT</h2>
+          {loading ? (
+            <div className="d-flex align-items-center justify-content-center">
+              <DNA
                 visible={true}
-                height="400"
-                width="400"
+                height="200"
+                width="200"
                 ariaLabel="dna-loading"
-                wrapperStyle={{}}
-                wrapperClass="dna-wrapper"
-                />
-                </div> ):(
-                  <Form formTitle={"Log In"} submitBtn={"Login"} formType={'login'} />
-                )}
-              </div>
+              />
             </div>
-            <div className="col-sm-6 px-0 d-none d-sm-block">
-              <img src="./assets/banner1.jpg" alt="Login image" />
-            </div>
-            </div>
+          ) : (
+            <Form
+              formTitle={"Log In"}
+              submitBtn={"Login"}
+              formType={'login'}
+            />
+          )}
         </div>
-      </section>
-        </div>
+      </div>
     </>
   )
 }
