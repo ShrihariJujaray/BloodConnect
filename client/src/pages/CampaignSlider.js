@@ -231,7 +231,8 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
       width: '100%',
       height: '100%',
       backgroundColor: 'rgba(0,0,0,0.5)',
-      zIndex: 1000
+      zIndex: 1000,
+      overflowY: 'auto'
     }}>
       <div className="modal-content" style={{
         position: 'relative',
@@ -244,10 +245,112 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
         width: '90%',
         maxWidth: '500px'
       }}>
-        
+        <h3>Add Volunteer</h3>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          <input
+            type="text"
+            placeholder="Name"
+            value={formData.name}
+            onChange={(e) => setFormData({...formData, name: e.target.value})}
+            style={inputStyle}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) => setFormData({...formData, email: e.target.value})}
+            style={inputStyle}
+          />
+          <input
+            type="tel"
+            placeholder="Phone"
+            value={formData.phone}
+            onChange={(e) => setFormData({...formData, phone: e.target.value})}
+            style={inputStyle}
+          />
+          <select
+            multiple
+            value={formData.skills}
+            onChange={(e) => setFormData({...formData, skills: Array.from(e.target.selectedOptions, option => option.value)})}
+            style={inputStyle}
+          >
+            <option value="First Aid">First Aid</option>
+            <option value="Coordination">Coordination</option>
+          </select>
+          <div>
+            <h4>Availability</h4>
+            <select
+              multiple
+              value={formData.availability.availableDays}
+              onChange={(e) => setFormData({
+                ...formData,
+                availability: {
+                  ...formData.availability,
+                  availableDays: Array.from(e.target.selectedOptions, option => option.value)
+                }
+              })}
+              style={inputStyle}
+            >
+              {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
+                <option key={day} value={day}>{day}</option>
+              ))}
+            </select>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+              <input
+                type="time"
+                value={formData.availability.availableHours.start}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  availability: {
+                    ...formData.availability,
+                    availableHours: { ...formData.availability.availableHours, start: e.target.value }
+                  }
+                })}
+                style={inputStyle}
+              />
+              <input
+                type="time"
+                value={formData.availability.availableHours.end}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  availability: {
+                    ...formData.availability,
+                    availableHours: { ...formData.availability.availableHours, end: e.target.value }
+                  }
+                })}
+                style={inputStyle}
+              />
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
+            <button type="submit" style={{...buttonStyle, backgroundColor: '#28a745'}}>
+              Submit
+            </button>
+            <button type="button" onClick={() => setShowModal(false)} style={buttonStyle}>
+              Close
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
+
+  // Add these styles
+  const inputStyle = {
+    padding: '8px 12px',
+    borderRadius: '4px',
+    border: '1px solid #ddd',
+    fontSize: '14px'
+  };
+
+  const buttonStyle = {
+    padding: '10px 20px',
+    borderRadius: '4px',
+    border: 'none',
+    color: 'white',
+    backgroundColor: '#6c757d',
+    cursor: 'pointer'
+  };
 
   if (!campaigns.length) return null;
 
