@@ -227,6 +227,26 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
     }
   };
 
+  const availableSkills = [
+    'First Aid',
+    'CPR Certified',
+    'Blood Collection',
+    'Patient Care',
+    'Vital Signs Monitoring',
+    'Medical Record Keeping',
+    'Emergency Response',
+    'Phlebotomy',
+    'Health Education',
+    'Medical Equipment Operation',
+    'Blood Pressure Monitoring',
+    'Basic Life Support (BLS)',
+    'Infection Control',
+    'Sterilization Procedures',
+    'Patient Communication'
+  ];
+
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
   const VolunteerModal = () => (
     <div className="modal" style={{
       display: showModal ? 'block' : 'none',
@@ -248,114 +268,155 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
         padding: '20px',
         borderRadius: '8px',
         width: '90%',
-        maxWidth: '500px'
+        maxWidth: '800px',
+        maxHeight: '80vh',
+        overflowY: 'auto'
       }}>
-        <h3>Add Volunteer</h3>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-          <input
-            type="text"
-            placeholder="Name"
-            value={formData.name}
-            onChange={(e) => setFormData({...formData, name: e.target.value})}
-            style={inputStyle}
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
-            style={inputStyle}
-          />
-          <input
-            type="tel"
-            placeholder="Phone"
-            value={formData.phone}
-            onChange={(e) => setFormData({...formData, phone: e.target.value})}
-            style={inputStyle}
-          />
-          <select
-            multiple
-            value={formData.skills}
-            onChange={(e) => setFormData({...formData, skills: Array.from(e.target.selectedOptions, option => option.value)})}
-            style={inputStyle}
-          >
-            <option value="First Aid">First Aid</option>
-            <option value="Coordination">Coordination</option>
-          </select>
-          <div>
-            <h4>Availability</h4>
-            <select
-              multiple
-              value={formData.availability.availableDays}
-              onChange={(e) => setFormData({
-                ...formData,
-                availability: {
-                  ...formData.availability,
-                  availableDays: Array.from(e.target.selectedOptions, option => option.value)
-                }
-              })}
-              style={inputStyle}
-            >
-              {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
-                <option key={day} value={day}>{day}</option>
-              ))}
-            </select>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-              <input
-                type="time"
-                value={formData.availability.availableHours.start}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  availability: {
-                    ...formData.availability,
-                    availableHours: { ...formData.availability.availableHours, start: e.target.value }
-                  }
-                })}
-                style={inputStyle}
-              />
-              <input
-                type="time"
-                value={formData.availability.availableHours.end}
-                onChange={(e) => setFormData({
-                  ...formData,
-                  availability: {
-                    ...formData.availability,
-                    availableHours: { ...formData.availability.availableHours, end: e.target.value }
-                  }
-                })}
-                style={inputStyle}
-              />
+        <div className="border p-3 mb-3 rounded">
+          <h3 className="mb-4">Add Volunteer</h3>
+          <form onSubmit={handleSubmit}>
+            <div className="row g-3">
+              <div className="col-md-4">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Volunteer Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  required
+                />
+              </div>
+              <div className="col-md-4">
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  required
+                />
+              </div>
+              <div className="col-md-4">
+                <input
+                  type="tel"
+                  className="form-control"
+                  placeholder="Phone"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  required
+                />
+              </div>
+              <div className="col-12">
+                <label className="form-label">Skills</label>
+                <select
+                  className="form-select mb-2"
+                  value=""
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      setFormData({
+                        ...formData,
+                        skills: [...formData.skills, e.target.value]
+                      });
+                    }
+                  }}
+                >
+                  <option value="">Select a skill to add</option>
+                  {availableSkills
+                    .filter(skill => !formData.skills.includes(skill))
+                    .map(skill => (
+                      <option key={skill} value={skill}>{skill}</option>
+                    ))}
+                </select>
+                <div className="d-flex flex-wrap gap-2">
+                  {formData.skills.map(skill => (
+                    <span key={skill} className="badge bg-primary d-flex align-items-center">
+                      {skill}
+                      <button
+                        type="button"
+                        className="btn-close btn-close-white ms-2"
+                        onClick={() => setFormData({
+                          ...formData,
+                          skills: formData.skills.filter(s => s !== skill)
+                        })}
+                      ></button>
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="col-12">
+                <label className="form-label">Available Days</label>
+                <div className="d-flex gap-2 flex-wrap">
+                  {days.map(day => (
+                    <div key={day} className="form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        checked={formData.availability.availableDays.includes(day)}
+                        onChange={(e) => {
+                          const updatedDays = e.target.checked
+                            ? [...formData.availability.availableDays, day]
+                            : formData.availability.availableDays.filter(d => d !== day);
+                          setFormData({
+                            ...formData,
+                            availability: {
+                              ...formData.availability,
+                              availableDays: updatedDays
+                            }
+                          });
+                        }}
+                        id={`day-${day}`}
+                      />
+                      <label className="form-check-label" htmlFor={`day-${day}`}>
+                        {day}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">Available Hours</label>
+                <input
+                  type="time"
+                  className="form-control"
+                  value={formData.availability.availableHours.start}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    availability: {
+                      ...formData.availability,
+                      availableHours: { ...formData.availability.availableHours, start: e.target.value }
+                    }
+                  })}
+                />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">End Time</label>
+                <input
+                  type="time"
+                  className="form-control"
+                  value={formData.availability.availableHours.end}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    availability: {
+                      ...formData.availability,
+                      availableHours: { ...formData.availability.availableHours, end: e.target.value }
+                    }
+                  })}
+                />
+              </div>
             </div>
-          </div>
-          <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
-            <button type="submit" style={{...buttonStyle, backgroundColor: '#28a745'}}>
-              Submit
-            </button>
-            <button type="button" onClick={() => setShowModal(false)} style={buttonStyle}>
-              Close
-            </button>
-          </div>
-        </form>
+            <div className="mt-4 d-flex gap-2">
+              <button type="submit" className="btn btn-primary">
+                Add Volunteer
+              </button>
+              <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
-
-  // Add these styles
-  const inputStyle = {
-    padding: '8px 12px',
-    borderRadius: '4px',
-    border: '1px solid #ddd',
-    fontSize: '14px'
-  };
-
-  const buttonStyle = {
-    padding: '10px 20px',
-    borderRadius: '4px',
-    border: 'none',
-    color: 'white',
-    backgroundColor: '#6c757d',
-    cursor: 'pointer'
-  };
 
   if (!campaigns.length) return null;
 
