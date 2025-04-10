@@ -35,12 +35,11 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
+    slidesToShow: 1, // Ensure only one slide shown
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
-    centerMode: false, // Change to false for better spacing
-    centerPadding: '0px', // Remove center padding
+    centerMode: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -57,7 +56,7 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
         }
       }
     ],
-    arrows: false, // Hide default arrows
+    arrows: false,
     pauseOnHover: true,
   };
 
@@ -99,6 +98,8 @@ const CampaignSlider = ({ campaigns = [], userRole }) => {
       width: '100%',
       display: 'flex',
       justifyContent: 'center',
+      margin: '0 auto', // Add margin auto
+      maxWidth: '1200px', // Control max width
     },
     card: {
       width: '100%',
