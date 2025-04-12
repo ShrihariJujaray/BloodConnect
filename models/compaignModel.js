@@ -31,7 +31,7 @@ const campaignSchema = new mongoose.Schema(
     createdBy: {
       role: {
         type: String,
-        enum: ["admin", "hospital", "organization"],
+        enum: ["admin", "hospital", "organisation"],
         required: true,
       },
       refId: {
