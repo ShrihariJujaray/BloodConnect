@@ -164,14 +164,6 @@ const completeRequest = async (req, res) => {
       });
     }
 
-    // Check if the user is the original requester
-    if (request.requester._id.toString() !== req.body.userId) {
-      return res.status(403).json({
-        success: false,
-        message: "Not authorized to complete this request",
-      });
-    }
-
     // Create inventory entry
     const inventoryData = {
       inventoryType: "in",

@@ -220,8 +220,9 @@ const RequestList = () => {
                     {renderDonorDetails(request)}
 
                     {request.scheduledDonor &&
-                      request.status === "scheduled" &&
-                      request.requester._id === user?._id && (
+                      (user?.role === "hospital" ||
+                        user?.role === "organisation") &&
+                      request.status === "scheduled" && (
                         <div className="action-buttons mt-3">
                           <button
                             className="btn btn-success w-100"
