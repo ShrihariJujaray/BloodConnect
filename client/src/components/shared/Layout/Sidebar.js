@@ -87,6 +87,22 @@ const Sidebar = () => {
                 <i className="fa-solid fa-building-ngo"></i>
                 <Link to="/organisation">Organisations</Link>
               </div>
+              <div
+                className={`menu-item ${
+                  location.pathname === "/blood-requests" && "active"
+                }`}
+              >
+                <i className="fa-solid fa-hand-holding-medical"></i>
+                <Link to="/blood-requests">Blood Requests</Link>
+              </div>
+              <div
+                className={`menu-item ${
+                  location.pathname === "/donation" && "active"
+                }`}
+              >
+                <i className="fa-solid fa-book-medical"></i>
+                <Link to="/donation">Donations Log</Link>
+              </div>
             </>
           )}
 
@@ -108,6 +124,14 @@ const Sidebar = () => {
                 <i className="fa-solid fa-calendar-plus"></i>
                 <Link to="/createcampaign">Create Campaign</Link>
               </div>
+              <div
+                className={`menu-item ${
+                  location.pathname === "/blood-requests" && "active"
+                }`}
+              >
+                <i className="fa-solid fa-hand-holding-medical"></i>
+                <Link to="/blood-requests">Blood Requests</Link>
+              </div>
             </>
           )}
 
@@ -119,16 +143,6 @@ const Sidebar = () => {
             >
               <i className="fa-solid fa-users-between-lines"></i>
               <Link to="/consumer">Consumer</Link>
-            </div>
-          )}
-          {user?.role === "donar" && (
-            <div
-              className={`menu-item ${
-                location.pathname === "/donation" && "active"
-              }`}
-            >
-              <i className="fa-solid fa-book-medical"></i>
-              <Link to="/donation">Donations Log</Link>
             </div>
           )}
 

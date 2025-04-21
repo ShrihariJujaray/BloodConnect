@@ -1,0 +1,163 @@
+.blood-request-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.blood-request-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.blood-request-card.urgent {
+  border-left: 4px solid #dc3545;
+}
+
+.blood-request-card.moderate {
+  border-left: 4px solid #ffc107;
+}
+
+.blood-request-card.normal {
+  border-left: 4px solid #198754;
+}
+
+.card-header {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.blood-group {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.status-badge {
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-badge.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.scheduled {
+  background: #cfe2ff;
+  color: #084298;
+}
+
+.status-badge.completed {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.status-badge.cancelled {
+  background: #f8d7da;
+  color: #842029;
+}
+
+.quantity-badge {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  color: #6c757d;
+}
+
+.card-body {
+  padding: 1.25rem;
+}
+
+.description {
+  color: #6c757d;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.requester-info {
+  color: #495057;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.time-info {
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+.btn-schedule {
+  background: linear-gradient(45deg, #4a90e2, #357abd);
+  color: white;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-schedule:hover {
+  background: linear-gradient(45deg, #357abd, #2d6da3);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.action-buttons {
+  margin-top: 1rem;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+.btn-success {
+  background: linear-gradient(45deg, #28a745, #218838);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+  background: linear-gradient(45deg, #218838, #1e7e34);
+  transform: translateY(-2px);
+}
+
+.donor-details {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+
+.donor-section-title {
+  color: #2c3e50;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.donor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.info-item i {
+  width: 20px;
+  color: #6c757d;
+}
+
+.info-item.notes {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #dee2e6;
+}
