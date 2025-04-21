@@ -17,6 +17,9 @@ import HospitalList from "./pages/admin/HospitalList";
 import OrgList from "./pages/admin/OrgList";
 import AdminHome from "./pages/admin/AdminHome";
 import CreateCampaign from "./pages/CreateCampaign";
+import RequestList from "./pages/BloodRequest/RequestList";
+import CreateRequest from "./pages/BloodRequest/CreateRequest";
+
 function App() {
   return (
     <>
@@ -120,6 +123,22 @@ function App() {
           element={
             <ProtectedRoute>
               <OrganisationPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/blood-requests"
+          element={
+            <ProtectedRoute>
+              <RequestList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-request"
+          element={
+            <ProtectedRoute>
+              <CreateRequest />
             </ProtectedRoute>
           }
         />
